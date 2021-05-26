@@ -38,41 +38,49 @@ METADATA ----> The list will be made of using the following standard
 
 """
 
-A = [1, 11, -3, -7, 2, 3, 5]
+# A = [1, 9, -3, -7, 2, 3, 5, -2, 3, 3, 1, 3]
+A = [10, -2, 10]
 
 def sub_array_parser(array):
     current_sum = 0
     biggest_sum = 0
     current_sub_array_length = 0
     biggest_sub_array_length = 0
-    metadata = []
+    current_sub_array_starting_index = -1
+    biggest_sub_array_staring_index = -1
+    searching_for_sub_array = True
 
-    for index, value in enumerate(array):
+    print(array)
+
+    for index, value in enumerate(array, start=0):
+        if value >= 0 and searching_for_sub_array:
+            searching_for_sub_array = False
+            current_sub_array_starting_index = index
+
         if value >= 0:
             current_sum += value
-
-            if current_sum == value:
-                current_sub_array_starting_index = index
-
-        if value < 0:
-            sub_array_length = (index - 1) - current_sub_array_starting_index
+            current_sub_array_length += 1
 
             if current_sum > biggest_sum:
                 biggest_sum = current_sum
-            
-            if current_sum == biggest_sum:
+                biggest_sub_array_length = current_sub_array_length
+                biggest_sub_array_staring_index = current_sub_array_starting_index
+
+
+            elif current_sum == biggest_sum:
                 if current_sub_array_length > biggest_sub_array_length:
                     biggest_sub_array_length = current_sub_array_length
+                    biggest_sub_array_staring_index = current_sub_array_starting_index
 
-                    return [biggest_sum, current_sub_array_starting_index, biggest_sub_array_length]
-
-                if current_sub_array_length == biggest_sub_array_length:
-                    if ():
-                        pass
-
+        else:
             current_sum = 0
+            current_sub_array_length = 0
+            searching_for_sub_array = True
 
+        print(f'current sum: {current_sum} | biggest sum: {biggest_sum} | current starting index: {current_sub_array_starting_index} | biggest starting index: {biggest_sub_array_staring_index} | current sub array length: {current_sub_array_length} | biggest sub array length: {biggest_sub_array_length}')
     
-    print(current_sum, biggest_sum)
+    return (array[biggest_sub_array_staring_index:biggest_sub_array_staring_index + biggest_sub_array_length])
 
-sub_array_parser(A)
+biggest_sub_array = sub_array_parser(A)
+
+print(biggest_sub_array)
